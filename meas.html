@@ -1067,15 +1067,11 @@ window.ontouchend = function(event) {
     var vis = visibilities[id];
     var index = vis.indexOf(statuses[id]);
     var bounds = event.target.getBoundingClientRect();
-    alert(event.changedTouches.length);
-    alert(event.changedTouches[0].pageX + " " + event.changedTouches[0].pageY);
-    alert(bounds.left + " " + bounds.right + " " + bounds.bottom);
-    alert(index + " " + vis);
-    if (event.pageX < bounds.left) {
+    if (event.changedTouches[0].pageX < bounds.left) {
       if (1 < index) setParam(id, vis[index-1]);
-    } else if (event.pageY > bounds.right) {
+    } else if (event.changedTouches[0].pageY > bounds.right) {
       if (index + 1 < vis.length) setParam(id, vis[index+1]);
-    } else if (event.pageY > bounds.bottom) {
+    } else if (event.changedTouches[0].pageY > bounds.bottom) {
       setParam(id, "h");
     }
   }
