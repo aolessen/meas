@@ -1067,7 +1067,7 @@ window.ontouchend = function(event) {
     var vis = visibilities[id];
     var index = vis.indexOf(statuses[id]);
     var bounds = event.target.getBoundingClientRect();
-    alert(event.pageX + " " + event.pageY + " " + bounds.left + " " + bounds.right + " " + bounds.bottom);
+    alert(event.changedTouches + " " + bounds.left + " " + bounds.right + " " + bounds.bottom);
     alert(index + " " + vis);
     if (event.pageX < bounds.left) {
       if (1 < index) setParam(id, vis[index-1]);
