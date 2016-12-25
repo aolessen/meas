@@ -1063,11 +1063,12 @@ window.ontouchstart = function(event) {
 }
 
 window.ontouchend = function(event) {
-  alert(id + " " + event.target.id);
   if (id != "") {
     var vis = visibilities[id];
     var index = vis.indexOf(statuses[id]);
     var bounds = event.target.getBoundingClientRect();
+    alert(event.pageX + " " + event.pageY + " " + bounds.left + " " + bounds.right + " " + bounds.bottom);
+    alert(index + " " + vis);
     if (event.pageX < bounds.left) {
       if (1 < index) setParam(id, vis[index-1]);
     } else if (event.pageY > bounds.right) {
