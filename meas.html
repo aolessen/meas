@@ -29,8 +29,8 @@
 <td><button class="dropbtn" ontouchmove="event.preventDefault()" id="drill">◄&nbspDrill&nbsp►</button></td>
 <td><button class="dropbtn" ontouchmove="event.preventDefault()" id="awg">◄&nbspAWG&nbsp►</button></td>
 <td><button class="dropbtn" ontouchmove="event.preventDefault()" id="swg">◄&nbspSWG&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mil2">◄&nbspmil2&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="in2">◄&nbspin2&nbsp►</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mil2">◄&nbspmil2&nbsp► ⬅ ⬆ ⬇ ➡</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="in2">◄&nbspin2&nbsp▲ ▼ ◀ ▶</button></td>
 <td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mm2">◄&nbspmm2&nbsp►</button></td>
 <td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mcm">▼&nbspMCM&nbsp▲</button></td>
 </tr>
@@ -942,7 +942,7 @@ function floatString(x, digits) {
 }
 
 
-function newMeasurement(x) {
+function newDiameter(x) {
   return {"inch": floatString(x, 5),
           "mm": floatString(2.54 * x, 4),
           "mm2": floatString(Math.pi/4 * x * x * 2.54 * 2.54,4),
@@ -1009,11 +1009,11 @@ if (statuses["mcm"] == "h")   document.getElementById("mainTable").classList.tog
 
 var obj = [];
 var d = Number(statuses["inch"])
-if (d) for (x = 0; x < 2; x += d) obj += newMeasurement(x);
+if (d) for (x = 0; x < 2; x += d) obj += newDiameter(x);
 var d = Number(statuses["mm"])
-if (d) for (x = 0; x < 2; x += d/2.54) obj += newMeasurement(x);
+if (d) for (x = 0; x < 2; x += d/2.54) obj += newDiameter(x);
 var d = Number(statuses["frac"])
-if (d) for (x = 0; x < 2; x += 1/d) obj += newMeasurement(x);
+if (d) for (x = 0; x < 2; x += 1/d) obj += newDiameter(x);
 
 var d = Number(statuses["mm2"])
 if (d) for (x = 0; x < 4; x += d/2.54/2.54) obj += newArea(x);
@@ -1026,7 +1026,7 @@ if (d) for (x = 0; x < 4; x += d*Math.pi/4000) obj += newArea(x);
 
 if (statuses["awg"] == "a") {
   for (name in awgTable) {
-    var o = newMeasurement(awgTable[name]);
+    var o = newDiameter(awgTable[name]);
     o["awg"] = name;
     obj += o;
   }
@@ -1034,7 +1034,7 @@ if (statuses["awg"] == "a") {
 
 if (statuses["swg"] == "a") {
   for (name in swgTable) {
-    var o = newMeasurement(swgTable[name]);
+    var o = newDiameter(swgTable[name]);
     o["swg"] = name;
     obj += o;
   }
@@ -1143,4 +1143,5 @@ for (i=1; i<rows.length; i++) {
 document.getElementById("mainTable").style = "";
 
 </script>
+
 </html>
