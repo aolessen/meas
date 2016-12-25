@@ -1,8 +1,13 @@
 <html>
 <style>
-.dropbtn {
+button {
   min-width: 60px;
 }
+
+form {
+  min-width: 60px;
+}
+
 
 #mainTable.hideinch  tr > *:nth-child(1) {display: none;}
 #mainTable.hidemm    tr > *:nth-child(2) {display: none;}
@@ -1077,7 +1082,7 @@ window.ontouchend = function(event) {
     var bounds = event.target.getBoundingClientRect();
     if (event.changedTouches[0].pageX < bounds.left) {
       if (1 < index) setParam(id, vis[index-1]);
-    } else if (event.changedTouches[0].pageY > bounds.right) {
+    } else if (event.changedTouches[0].pageX > bounds.right) {
       if (index + 1 < vis.length) setParam(id, vis[index+1]);
     } else if (event.changedTouches[0].pageY < bounds.top) {
       setParam(id, "h");
