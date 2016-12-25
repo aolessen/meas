@@ -20,19 +20,19 @@
 </style>
 
 <table><tbody id=mainTable style="display:none"><tr style="position:initial">
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="inch">◄&nbspInch&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mm">◄&nbspmm&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="ithr">◄&nbspImperial&nbspThreads&nbsp►</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="inch">&lt&nbspInch&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mm">&lt&nbspmm&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="ithr">&lt&nbspImperial&nbspThreads&nbsp&gt</button></td>
 <td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mthr">&lt&nbspMetric&nbspThreads&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="frac">◄&nbspFrac&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="screw">◄&nbspScrew&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="drill">◄&nbspDrill&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="awg">◄&nbspAWG&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="swg">◄&nbspSWG&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mil2">◄&nbspmil2&nbsp► ⬅ ⬆ ⬇ ➡</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="in2">◄&nbspin2&nbsp▲ ▼ ◀ ▶</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mm2">◄&nbspmm2&nbsp►</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mcm">▼&nbspMCM&nbsp▲</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="frac">&lt&nbspFrac&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="screw">&lt&nbspScrew&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="drill">&lt&nbspDrill&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="awg">&lt&nbspAWG&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="swg">&lt&nbspSWG&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mil2">&lt&nbspmil2&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="in2">&lt&nbspin2&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mm2">&lt&nbspmm2&nbsp&gt</button></td>
+<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mcm">&lt&nbspMCM&nbsp&gt</button></td>
 </tr>
 
 <tr><td>.0010</td><td>.0254</td><td></td><td></td><td></td><td></td><td></td><td></td><td>50</td><td>.7853</td><td>.0000</td><td>.0005</td><td>.0010</td></tr>
@@ -962,7 +962,6 @@ function newArea(x) {
 }
 
 
-
 var visibilities = {};
 visibilities["inch"] = ["h", "n", ".1", ".01"];
 visibilities["mm"] = ["h", "n", "1", ".1"];
@@ -1064,6 +1063,7 @@ window.ontouchstart = function(event) {
 }
 
 window.ontouchend = function(event) {
+  alert(id + " " + event.target.id);
   if (id != "") {
     var vis = visibilities[id];
     var index = vis.indexOf(statuses[id]);
