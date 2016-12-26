@@ -1,4 +1,4 @@
-<html style="font-family:sans-serif;white-space:nowrap;">
+<html style="font-family:sans-serif;white-space:nowrap">
 <style>
 
 .divField {
@@ -12,6 +12,7 @@
     background-image: linear-gradient(to bottom, #FFFFFF 0%, #CCCCCC 100%);
     text-align: center;
     cursor: default;
+    padding: 20px;
 }
 .divButton:active{
     background-image: linear-gradient(to bottom, #AAAAAA 0%, #DDDDDD 100%);
@@ -33,7 +34,7 @@
 </style>
 
 
-<table><tbody id=mainTable style="display:none">
+<table><tbody id=mainTable style="display:none;font-size:200%">
 <tr onkeydown="if (event.which==13) setParam(event.target.id, event.target.innerHTML);">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
