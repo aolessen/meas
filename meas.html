@@ -1077,9 +1077,12 @@ window.onclick = function(event) {
 var id = "";
 window.ontouchstart = function(event) {
   id = "";
-  if (event.target.matches('.dropbtn')) id = event.target.id;
-}
+  if (event.target.matches('.dropbtn')) {id = event.target.id;
+  timer = setTimeout(function() {rows[1].style.display="";}, 500);
+}}
+
 window.ontouchend = function(event) {
+  if (timer) clearTimeout(timer);
   if (id != "") {
     var vis = visibilities[id];
     var index = vis.indexOf(statuses[id]);
@@ -1095,6 +1098,7 @@ window.ontouchend = function(event) {
     }
   }
 }
+
 
 /******************************* Table selection ******************************/
 
