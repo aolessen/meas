@@ -945,8 +945,8 @@ input {
 
 </tbody></table>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
+/******************************* Parameters ***********************************/
 
 function getParam(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -954,6 +954,7 @@ function getParam(name) {
     var results = regex.exec(location.search);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
+
 function setParam(name, value) {
   /* build params */
   var params = {};        
@@ -1000,6 +1001,7 @@ for (unit in visibilities) {
     document.getElementById(unit+"Field").value = statuses[unit];
 }
 
+/******************************* Table generation *****************************/
 
 //function floatString(x, digits) {
 //  if (x>=Math.pow(10,digits) || x < 0) return "-".repeat(digits);
@@ -1057,6 +1059,8 @@ for (unit in visibilities) {
 //  }
 //}
 
+/******************************* Touch and click ******************************/
+
 window.onclick = function(event) {
   if (event.target.matches('.dropbtn')) {
     var vis = visibilities[event.target.id];
@@ -1092,6 +1096,7 @@ window.ontouchend = function(event) {
   }
 }
 
+/******************************* Table selection ******************************/
 
 var rows = document.getElementById("mainTable").children;
 for (i=2; i<rows.length; i++) {
