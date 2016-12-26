@@ -1,13 +1,21 @@
-<html>
+<html style="font-family:sans-serif;white-space:nowrap;">
 <style>
-button {
-  min-width: 60px;
+
+.divField {
+    border: solid #777777 1px;
+    background-image: linear-gradient(to bottom, #CCCCCC 0%, #FFFFFF 10%);
+    contenteditable: true;
 }
 
-input {
-  width: 60px;
+.divButton {
+    border: solid #777777 1px; border-radius:4px;
+    background-image: linear-gradient(to bottom, #FFFFFF 0%, #CCCCCC 100%);
+    text-align: center;
+    cursor: default;
 }
-
+.divButton:active{
+    background-image: linear-gradient(to bottom, #AAAAAA 0%, #DDDDDD 100%);
+}
 
 #mainTable.hideinch  tr > *:nth-child(1) {display: none;}
 #mainTable.hidemm    tr > *:nth-child(2) {display: none;}
@@ -24,36 +32,23 @@ input {
 #mainTable.hidemcm   tr > *:nth-child(13) {display: none;}
 </style>
 
-<table><tbody id=mainTable style="display:none"><tr style="position:initial">
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="inch">&lt&nbspInch&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mm">&lt&nbspmm&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="ithr">&lt&nbspImperial&nbspThreads&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mthr">&lt&nbspMetric&nbspThreads&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="frac">&lt&nbspFrac&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="screw">&lt&nbspScrew&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="drill">&lt&nbspDrill&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="awg">&lt&nbspAWG&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="swg">&lt&nbspSWG&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mil2">&lt&nbspmil2&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="in2">&lt&nbspin2&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mm2">&lt&nbspmm2&nbsp&gt</button></td>
-<td><button class="dropbtn" ontouchmove="event.preventDefault()" id="mcm">&lt&nbspMCM&nbsp&gt</button></td>
-</tr><tr style="display:none">
-<td><form onsubmit="event.preventDefault();setParam('inch', document.getElementById('inchField').value)"><input type="text" id="inchField" ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('mm', document.getElementById('mmField').value)"><input type="text" id="mmField"   ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('ithr', document.getElementById('ithrField').value)"><input type="text" id="ithrField" ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('mthr', document.getElementById('mthrField').value)"><input type="text" id="mthrField" ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('frac', document.getElementById('fracField').value)"><input type="text" id="fracField" ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('screw', document.getElementById('screwField').value)"><input type="text" id="screwField"></form></td>
-<td><form onsubmit="event.preventDefault();setParam('drill', document.getElementById('drillField').value)"><input type="text" id="drillField"></form></td>
-<td><form onsubmit="event.preventDefault();setParam('awg', document.getElementById('awgField').value)"><input type="text" id="awgField"  ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('swg', document.getElementById('swgField').value)"><input type="text" id="swgField"  ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('mil2', document.getElementById('mil2Field').value)"><input type="text" id="mil2Field" ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('in2', document.getElementById('in2Field').value)"><input type="text" id="in2Field"  ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('mm2', document.getElementById('mm2Field').value)"><input type="text" id="mm2Field"  ></form></td>
-<td><form onsubmit="event.preventDefault();setParam('mcm', document.getElementById('mcmField').value)"><input type="text" id="mcmField"  ></form></td>
-</tr>
 
+<table><tbody id=mainTable style="display:none">
+<tr onkeydown="if (event.which==13) setParam(event.target.id, event.target.innerHTML);">
+<td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="mthr">Metric</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="frac">Fraction</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="screw">Screw</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="drill">Drill</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="awg">AWG</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="swg">SWG</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="mil2">mil²</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="in2">in²</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="mm2">mm²</td>
+<td class="divButton" ontouchmove="event.preventDefault()" id="mcm">MCM</td>
+</tr>
 <tr><td>.0010</td><td>.0254</td><td></td><td></td><td></td><td></td><td></td><td></td><td>50</td><td>.7853</td><td>.0000</td><td>.0005</td><td>.0010</td></tr>
 <tr><td>.0011</td><td>.0304</td><td></td><td></td><td></td><td></td><td></td><td></td><td>49</td><td>1.130</td><td>.0000</td><td>.0007</td><td>.0014</td></tr>
 <tr><td>.0016</td><td>.0406</td><td></td><td></td><td></td><td></td><td></td><td></td><td>48</td><td>2.010</td><td>.0000</td><td>.0012</td><td>.0025</td></tr>
@@ -998,7 +993,7 @@ for (unit in visibilities) {
     statuses[unit] = getParam(unit);
     if (statuses[unit] == "") statuses[unit] = "n";
     if (statuses[unit] == "h")  document.getElementById("mainTable").classList.toggle("hide" + unit);
-    document.getElementById(unit+"Field").value = statuses[unit];
+//    document.getElementById(unit+"Field").value = statuses[unit];
 }
 
 /******************************* Table generation *****************************/
@@ -1062,7 +1057,7 @@ for (unit in visibilities) {
 /******************************* Touch and click ******************************/
 
 window.onclick = function(event) {
-  if (event.target.matches('.dropbtn')) {
+  if (event.target.matches('.divButton')) {
     var vis = visibilities[event.target.id];
     var index = vis.indexOf(statuses[event.target.id]);
     var bounds = event.target.getBoundingClientRect();
@@ -1074,11 +1069,15 @@ window.onclick = function(event) {
   }
 }
 
+var timer;
 var id = "";
 window.ontouchstart = function(event) {
   id = "";
-  if (event.target.matches('.dropbtn')) {id = event.target.id;
-  timer = setTimeout(function() {rows[1].style.display="";}, 500);
+  if (event.target.matches('.divButton')) {id = event.target.id;
+  timer = setTimeout(function() {
+    document.getElementById(event.target.id).className = "divField";
+    document.getElementById(event.target.id).contentEditable = "true";
+    document.getElementById(event.target.id).innerHTML = statuses[event.target.id];}, 1000);
 }}
 
 window.ontouchend = function(event) {
@@ -1087,23 +1086,21 @@ window.ontouchend = function(event) {
     var vis = visibilities[id];
     var index = vis.indexOf(statuses[id]);
     var bounds = event.target.getBoundingClientRect();
-    if (event.changedTouches[0].pageX < bounds.left) {
+    if (event.changedTouches[0].pageX < bounds.left) { // next setting
       if (1 < index) setParam(id, vis[index-1]);
-    } else if (event.changedTouches[0].pageX > bounds.right) {
-      if (index + 1 < vis.length) setParam(id, vis[index+1]);
-    } else if (event.changedTouches[0].pageY < bounds.top) {
+    } else if (event.changedTouches[0].pageX > bounds.right) { // previous setting
+      if (index < 0) setParam(id, "n");
+      else if (index + 1 < vis.length) setParam(id, vis[index+1]);
+    } else if (event.changedTouches[0].pageY > bounds.bottom) { // clear setting
       setParam(id, "h");
-    } else if (event.changedTouches[0].pageY > bounds.bottom) {
-      rows[1].style.display = "";
     }
   }
 }
 
-
 /******************************* Table selection ******************************/
 
 var rows = document.getElementById("mainTable").children;
-for (i=2; i<rows.length; i++) {
+for (i=1; i<rows.length; i++) {
   rows[i].style.display = "none";
   if (Number(rows[i].children[0].innerHTML)*Math.round(1/Number(statuses["inch"]))%1==0) rows[i].style.display="";
   if (Number(rows[i].children[1].innerHTML)*Math.round(1/Number(statuses["mm"]))%1==0) rows[i].style.display="";
