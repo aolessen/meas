@@ -35,7 +35,7 @@
 
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13) {statuses[event.target.id]=event.target.innerHTML;update()}">
+<tr onkeydown="if (event.which==13) {statuses[event.target.id]=event.target.innerHTML;update();event.target.innerHTML=name[event.target.id];event.target.className='divButton';}">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
@@ -959,6 +959,21 @@ var visibilities = {
     "in2":   ["h", "n", "a"],
     "mm2":   ["h", "n", "a"],
     "mcm":   ["h", "n", "a"]};
+
+var names = {
+    "inch":  "Inch",
+    "mm":    "mm",
+    "ithr":  "Imperial",
+    "mthr":  "Metric",
+    "frac":  "Fraction",
+    "screw": "Screw",
+    "drill": "Drill",
+    "awg":   "AWG",
+    "swg":   "SWG",
+    "mil2":  "mil²",
+    "in2":   "in²",
+    "mm2":   "mm²",
+    "mcm":   "MCM"};
 
 function getCookie(cname) {
     var ca = document.cookie.split(';');
