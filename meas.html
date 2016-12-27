@@ -1089,12 +1089,12 @@ window.ontouchstart = function(event) {
   id = event.target.id;
   if (event.target.matches('.divButton') && id!="") {
     timer = setTimeout(function() {
-      document.getElementById(id).className = "divField";
-      document.getElementById(id).contentEditable = "true";
-      document.getElementById(id).innerHTML = statuses[id];
-//      event.target.className = "divField";
-//      event.target.contentEditable = "true";
-//      event.target.innerHTML = statuses[event.target.id];
+//      document.getElementById(id).className = "divField";
+//      document.getElementById(id).contentEditable = "true";
+//      document.getElementById(id).innerHTML = statuses[id];
+      event.target.className = "divField";
+      event.target.contentEditable = "true";
+      event.target.innerHTML = statuses[event.target.id];
     }, 1000);
   }
 }
@@ -1128,7 +1128,8 @@ function restoreAll () {
 function update() {
   for (unit in statuses) {
     document.cookie = unit + "=" + statuses[unit];
-    if (statuses[unit] == "h")  document.getElementById("mainTable").classList.toggle("hide" + unit);
+    if (statuses[unit] == "h") document.getElementById("mainTable").classList.add("hide" + unit);
+    else                       document.getElementById("mainTable").classList.remove("hide" + unit);
   }
   var rows = document.getElementById("mainTable").children;
   for (i=1; i<rows.length-1; i++) {
