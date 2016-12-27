@@ -34,7 +34,7 @@
 </style>
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13) {deselect(event.target);}">
+<tr onkeydown="if (event.which==13) {event.target.blur();}">
 <td class="divButton" ontouchmove="event.preventDefault()" tabindex="1" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" tabindex="2" id="mm">mm</td>
 <td class="divButton" ontouchmove="event.preventDefault()" tabindex="3" id="ithr">Imperial</td>
@@ -1048,21 +1048,6 @@ for (unit in visibilities) {
 //}
 
 /******************************* Touch and click ******************************/
-//window.onclick = function(event) {
-//  id = event.target.id;
-//  if (event.target.matches('.divButton') && id!="") {
-//    var vis = visibilities[id];
-//    var index = vis.indexOf(statuses[id]);
-//    var bounds = event.target.getBoundingClientRect();
-//    if (2 * event.pageX < bounds.right + bounds.left) {
-//      if (1 < index) statuses[id] = vis[index-1];
-//    } else {
-//      if (index + 1 < vis.length) statuses[id] = vis[index+1];
-//    }
-//    update();
-//  }
-//}
-
 var id = "";
 var timer;
 window.ontouchstart = function(event) {
@@ -1091,28 +1076,22 @@ window.ontouchend = function(event) {
 }
 
 for (i in statuses) {
-    document.getElementById(i).onfocus = function() {select(event.target)};
-    document.getElementById(i).onblur = function() {deselect(event.target)};
-}
-
-function select(target) {
-  target.className = "divField";
-  target.contentEditable = "true";
-  target.innerHTML = statuses[target.id];
-  var range = document.createRange();
-  range.selectNodeContents(event.target);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
-}
-
-function deselect(target) {
-  if (target.className == "divField") {
-    statuses[target.id] = target.innerHTML.toLowerCase();
-    update();
-    target.className = 'divButton';
-    target.contentEditable = false;
-    target.innerHTML = names[target.id];
-  }
+    document.getElementById(i).onfocus = function() {
+      event.target.className = "divField";
+      event.target.contentEditable = "true";
+      event.target.innerHTML = statuses[event.target.id];
+      var range = document.createRange();
+      range.selectNodeContents(event.target);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+    };
+    document.getElementById(i).onblur = function() {
+      statuses[event.target.id] = event.target.innerHTML.toLowerCase();
+      update();
+      event.target.className = 'divButton';
+      event.target.contentEditable = false;
+      event.target.innerHTML = names[event.target.id];
+    };
 }
 
 /******************************* Table selection ******************************/
