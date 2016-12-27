@@ -33,23 +33,21 @@
 #mainTable.hidemcm   tr > *:nth-child(13) {display: none;}
 </style>
 
-
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13)   {deselect(event.target);}
-">
-<td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="mthr">Metric</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="frac">Fraction</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="screw">Screw</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="drill">Drill</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="awg">AWG</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="swg">SWG</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="mil2">mil²</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="in2">in²</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="mm2">mm²</td>
-<td class="divButton" ontouchmove="event.preventDefault()" id="mcm">MCM</td>
+<tr onkeydown="if (event.which==13) {deselect(event.target);}">
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="1" id="inch">Inch</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="2" id="mm">mm</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="3" id="ithr">Imperial</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="4" id="mthr">Metric</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="5" id="frac">Fraction</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="6" id="screw">Screw</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="7" id="drill">Drill</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="8" id="awg">AWG</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="9" id="swg">SWG</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="10" id="mil2">mil²</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="11" id="in2">in²</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="12" id="mm2">mm²</td>
+<td class="divButton" ontouchmove="event.preventDefault()" tabindex="13" id="mcm">MCM</td>
 </tr>
 <tr><td>.0010</td><td>.0254</td><td></td><td></td><td></td><td></td><td></td><td></td><td>50</td><td>.7853</td><td>.0000</td><td>.0005</td><td>.0010</td></tr>
 <tr><td>.0011</td><td>.0304</td><td></td><td></td><td></td><td></td><td></td><td></td><td>49</td><td>1.130</td><td>.0000</td><td>.0007</td><td>.0014</td></tr>
@@ -1050,39 +1048,27 @@ for (unit in visibilities) {
 //}
 
 /******************************* Touch and click ******************************/
+//window.onclick = function(event) {
+//  id = event.target.id;
+//  if (event.target.matches('.divButton') && id!="") {
+//    var vis = visibilities[id];
+//    var index = vis.indexOf(statuses[id]);
+//    var bounds = event.target.getBoundingClientRect();
+//    if (2 * event.pageX < bounds.right + bounds.left) {
+//      if (1 < index) statuses[id] = vis[index-1];
+//    } else {
+//      if (index + 1 < vis.length) statuses[id] = vis[index+1];
+//    }
+//    update();
+//  }
+//}
+
 var id = "";
 var timer;
-window.onclick = function(event) {
-  id = event.target.id;
-  if (event.target.matches('.divButton') && id!="") {
-    var vis = visibilities[id];
-    var index = vis.indexOf(statuses[id]);
-    var bounds = event.target.getBoundingClientRect();
-    if (2 * event.pageX < bounds.right + bounds.left) {
-      if (1 < index) statuses[id] = vis[index-1];
-    } else {
-      if (index + 1 < vis.length) statuses[id] = vis[index+1];
-    }
-    update();
-  }
-}
-
-window.ondblclick = function(event) {
-  if (event.target.matches('.divButton') && event.target.id!="") {
-      event.target.className = "divField";
-      event.target.contentEditable = "true";
-      event.target.innerHTML = statuses[event.target.id];
-  }
-}
-
 window.ontouchstart = function(event) {
   id = event.target.id;
   if (event.target.matches(".divButton") && id!="") {
-    timer = setTimeout(function() {
-      event.target.className = "divField";
-      event.target.contentEditable = "true";
-      event.target.innerHTML = statuses[event.target.id];
-    }, 1000);
+    timer = setTimeout(function() {event.target.focus();}, 1000);
   }
 }
 
@@ -1102,6 +1088,21 @@ window.ontouchend = function(event) {
     }
     update();
   }
+}
+
+for (i in statuses) {
+    document.getElementById(i).onfocus = function() {select(event.target)};
+    document.getElementById(i).onblur = function() {deselect(event.target)};
+}
+
+function select(target) {
+  target.className = "divField";
+  target.contentEditable = "true";
+  target.innerHTML = statuses[target.id];
+  var range = document.createRange();
+  range.selectNodeContents(event.target);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
 }
 
 function deselect(target) {
