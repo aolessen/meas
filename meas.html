@@ -35,8 +35,9 @@
 
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13) {statuses[event.target.id]=event.target.innerHTML;update()}">
-<td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
+<!--tr onkeydown="if (event.which==13) {statuses[event.target.id]=event.target.innerHTML;update()}"-->
+<tr>
+<td class="divButton" onchange="statuses[event.target.id]=event.target.innerHTML;update();event.target.className=divButton;)" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mthr">Metric</td>
