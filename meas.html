@@ -946,44 +946,34 @@
 <script>
 /******************************* Parameters ***********************************/
 
-function getParam(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
-
-function getCookie(cname) {
-    var ca = document.cookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1);
-        if (c.indexOf(cname + "=") == 0) return c.substring(cname.length + 1, c.length);
-    }
-    return "";
-}
-
-function setParams(newParams) {
-  /* build params */
-  var params = {};        
-  var x = /(?:\??)([^=&?]+)=?([^&?]*)/g;        
-  var s = window.location.search;
-  for(var r = x.exec(s); r; r = x.exec(s)) {
-    if (!r[2]) r[2] = '%%';
-    params[decodeURIComponent(r[1])] = r[2];
-  }
-  /* set params */
-  for (var i in newParams) params[i] = encodeURIComponent(newParams[i]);
-  /* build search */
-  var search = [];
-  for(var i in params) {
-    var p = encodeURIComponent(i);
-    if (params[i] != '%%') p += '=' + params[i];
-    search.push(p);
-  }
-  /* execute search */
-  window.location.search = search.join('&');
-}
+//function getParam(name) {
+//    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+//    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+//    var results = regex.exec(location.search);
+//    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+//};
+//
+//function setParams(newParams) {
+//  /* build params */
+//  var params = {};        
+//  var x = /(?:\??)([^=&?]+)=?([^&?]*)/g;        
+//  var s = window.location.search;
+//  for(var r = x.exec(s); r; r = x.exec(s)) {
+//    if (!r[2]) r[2] = '%%';
+//    params[decodeURIComponent(r[1])] = r[2];
+//  }
+//  /* set params */
+//  for (var i in newParams) params[i] = encodeURIComponent(newParams[i]);
+//  /* build search */
+//  var search = [];
+//  for(var i in params) {
+//    var p = encodeURIComponent(i);
+//    if (params[i] != '%%') p += '=' + params[i];
+//    search.push(p);
+//  }
+//  /* execute search */
+//  window.location.search = search.join('&');
+//}
 
 
 var visibilities = {
@@ -1001,13 +991,20 @@ var visibilities = {
     "mm2":   ["h", "n", "a"],
     "mcm":   ["h", "n", "a"]};
 
+function getCookie(cname) {
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(cname + "=") == 0) return c.substring(cname.length + 1, c.length);
+    }
+    return "";
+}
 
 var statuses = {};
 for (unit in visibilities) {
   statuses[unit] = getCookie(unit);
-//  statuses[unit] = getParam(unit);
   if (statuses[unit] == "") statuses[unit] = "n";
-  if (statuses[unit] == "h")  document.getElementById("mainTable").classList.toggle("hide" + unit);
 }
 
 
@@ -1092,12 +1089,12 @@ window.ontouchstart = function(event) {
   id = event.target.id;
   if (event.target.matches('.divButton') && id!="") {
     timer = setTimeout(function() {
-//      document.getElementById(id).className = "divField";
-//      document.getElementById(id).contentEditable = "true";
-//      document.getElementById(id).innerHTML = statuses[id];
-      event.target.className = "divField";
-      event.target.contentEditable = "true";
-      event.target.innerHTML = statuses[event.target.id];
+      document.getElementById(id).className = "divField";
+      document.getElementById(id).contentEditable = "true";
+      document.getElementById(id).innerHTML = statuses[id];
+//      event.target.className = "divField";
+//      event.target.contentEditable = "true";
+//      event.target.innerHTML = statuses[event.target.id];
     }, 1000);
   }
 }
@@ -1129,7 +1126,10 @@ function restoreAll () {
 /******************************* Table selection ******************************/
 
 function update() {
-  for (unit in statuses) document.cookie = unit + "=" + statuses[unit];
+  for (unit in statuses) {
+    document.cookie = unit + "=" + statuses[unit];
+    if (statuses[unit] == "h")  document.getElementById("mainTable").classList.toggle("hide" + unit);
+  }
   var rows = document.getElementById("mainTable").children;
   for (i=1; i<rows.length-1; i++) {
     rows[i].style.display = "none";
