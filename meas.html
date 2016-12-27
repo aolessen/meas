@@ -35,11 +35,7 @@
 
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13)   {statuses[event.target.id] = event.target.innerHTML.toLowerCase();
-  update();
-  event.target.className = 'divButton';
-  event.target.contentEditable = false;
-  event.target.innerHTML = names[event.target.id];}
+<tr onkeydown="if (event.which==13)   {deselect(event.target);}
 ">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
