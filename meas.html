@@ -1051,6 +1051,13 @@ window.onclick = function(event) {
   }
 }
 
+window.ondblclick = function(event) {
+  if (event.target.matches('.divButton') && event.target.id!="") {
+    statuses[event.target.id] = "h";
+    update();
+  }
+}
+
 window.ontouchstart = function(event) {
   id = event.target.id;
   if (event.target.matches(".divButton") && id!="") {
