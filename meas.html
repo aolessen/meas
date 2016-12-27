@@ -35,7 +35,7 @@
 
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13) {statuses[event.target.id]=event.target.innerHTML;update();event.target.innerHTML=names[event.target.id];event.target.className='divButton';event.target.contentEditable=false;}">
+<tr onkeydown="if (event.which==13) deselect();">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
@@ -1063,6 +1063,8 @@ window.onclick = function(event) {
       if (index + 1 < vis.length) statuses[id] = vis[index+1];
     }
     update();
+  } else {
+    for (i in statuses) deselect(document.getElementbyId(i));
   }
 }
 
@@ -1100,6 +1102,14 @@ window.ontouchend = function(event) {
     }
     update();
   }
+}
+
+function deselect(target) {
+  statuses[target.id]=target.innerHTML.toLowerCase();
+  update();
+  target.className = 'divButton';
+  target.contentEditable = false;
+  target.innerHTML = names[target.id];
 }
 
 /******************************* Table selection ******************************/
