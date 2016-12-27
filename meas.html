@@ -35,7 +35,7 @@
 
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13) setParam(event.target.id, event.target.innerHTML);">
+<tr onkeydown="if (event.which==13) setParams({event.target.id: event.target.innerHTML});">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
@@ -939,6 +939,8 @@
 <tr><td>2.250</td><td>57.15</td><td>2 1/4-4.5 0%<br>2 1/2-4 82%</td><td>M60-5.5 42%<br>M64-6.0 93%</td><td></td><td>2 1/4-4.5</td><td></td><td></td><td></td><td>-----</td><td>3.976</td><td>2565.</td><td>5062.</td></tr>
 <tr><td>2.500</td><td>63.50</td><td>2 1/2-4 0%</td><td>M64-6.0 7%<br>M68-6.0 61%</td><td></td><td>2 1/2-4</td><td></td><td></td><td></td><td>-----</td><td>4.908</td><td>3166.</td><td>6250.</td></tr>
 
+<tr><td colspan="100" class="divButton" onclick="restoreAll()">Restore Columns</td></tr>
+
 </tbody></table>
 
 <script>
@@ -950,6 +952,37 @@ function getParam(name) {
     var results = regex.exec(location.search);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
+
+function getCookie2(cname) {
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(cname + "=") == 0) return c.substring(cname.length + 1, c.length);
+    }
+    return "";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+console.log(getCookie("awg"));
+document.cookie = "username=John Doe";
+var un = getCookie("username")
+console.log(document.cookie);
+
 
 function setParam(name, value) {
   /* build params */
@@ -973,6 +1006,29 @@ function setParam(name, value) {
   window.location.search = search.join('&');
 }
 
+function setParams(newParams) {
+  /* build params */
+  var params = {};        
+  var x = /(?:\??)([^=&?]+)=?([^&?]*)/g;        
+  var s = window.location.search;
+  for(var r = x.exec(s); r; r = x.exec(s)) {
+    if (!r[2]) r[2] = '%%';
+    params[decodeURIComponent(r[1])] = r[2];
+  }
+  /* set params */
+  for (var i in newParams) params[i] = encodeURIComponent(newParams[i]);
+  /* build search */
+  var search = [];
+  for(var i in params) {
+    var p = encodeURIComponent(i);
+    if (params[i] != '%%') p += '=' + params[i];
+    search.push(p);
+  }
+  /* execute search */
+  window.location.search = search.join('&');
+}
+
+
 
 var visibilities = {
     "inch":  ["h", "n", ".1", ".01"],
@@ -994,7 +1050,6 @@ for (unit in visibilities) {
     statuses[unit] = getParam(unit);
     if (statuses[unit] == "") statuses[unit] = "n";
     if (statuses[unit] == "h")  document.getElementById("mainTable").classList.toggle("hide" + unit);
-//    document.getElementById(unit+"Field").value = statuses[unit];
 }
 
 /******************************* Table generation *****************************/
@@ -1058,28 +1113,36 @@ for (unit in visibilities) {
 /******************************* Touch and click ******************************/
 
 window.onclick = function(event) {
-  if (event.target.matches('.divButton')) {
-    var vis = visibilities[event.target.id];
-    var index = vis.indexOf(statuses[event.target.id]);
+  console.log(getCookie("username"));
+  id = event.target.id;
+  if (event.target.matches('.divButton') && id!="") {
+    var vis = visibilities[id];
+    var index = vis.indexOf(statuses[id]);
     var bounds = event.target.getBoundingClientRect();
     if (2 * event.pageX < bounds.right + bounds.left) {
-      if (1 < index) setParam(event.target.id, vis[index-1]);
+      if (1 < index) statuses[id] = vis[index-1];
     } else {
-      if (index + 1 < vis.length) setParam(event.target.id, vis[index+1]);
+      if (index + 1 < vis.length) statuses[id] = vis[index+1];
     }
+    update();
   }
 }
 
 var timer;
 var id = "";
 window.ontouchstart = function(event) {
-  id = "";
-  if (event.target.matches('.divButton')) {id = event.target.id;
-  timer = setTimeout(function() {
-    document.getElementById(event.target.id).className = "divField";
-    document.getElementById(event.target.id).contentEditable = "true";
-    document.getElementById(event.target.id).innerHTML = statuses[event.target.id];}, 1000);
-}}
+  id = event.target.id;
+  if (event.target.matches('.divButton') && id!="") {
+    timer = setTimeout(function() {
+//      document.getElementById(id).className = "divField";
+//      document.getElementById(id).contentEditable = "true";
+//      document.getElementById(id).innerHTML = statuses[id];
+      event.target.className = "divField";
+      event.target.contentEditable = "true";
+      event.target.innerHTML = statuses[event.target.id];
+    }, 1000);
+  }
+}
 
 window.ontouchend = function(event) {
   if (timer) clearTimeout(timer);
@@ -1088,34 +1151,49 @@ window.ontouchend = function(event) {
     var index = vis.indexOf(statuses[id]);
     var bounds = event.target.getBoundingClientRect();
     if (event.changedTouches[0].pageX < bounds.left) { // next setting
-      if (1 < index) setParam(id, vis[index-1]);
+      if (1 < index) statuses[id] = vis[index-1];
     } else if (event.changedTouches[0].pageX > bounds.right) { // previous setting
-      if (index < 0) setParam(id, "n");
-      else if (index + 1 < vis.length) setParam(id, vis[index+1]);
+      if (index < 0) index=0;
+      if (index + 1 < vis.length) statuses[id] = vis[index+1];
     } else if (event.changedTouches[0].pageY > bounds.bottom) { // clear setting
-      setParam(id, "h");
+      statuses[id] = "h";
     }
+    setParams(statuses);
   }
+}
+
+window.onpagehide = function(event) {
+  alert("A");
+  setParams(statuses);
+}
+
+function restoreAll () {
+  alert("asd");
+  for (unit in statuses) if (statuses[unit]=="h") statuses[unit]="n";
+  setParams(statuses);
 }
 
 /******************************* Table selection ******************************/
 
-var rows = document.getElementById("mainTable").children;
-for (i=1; i<rows.length; i++) {
-  rows[i].style.display = "none";
-  if (Number(rows[i].children[0].innerHTML)*Math.round(1/Number(statuses["inch"]))%1==0) rows[i].style.display="";
-  if (Number(rows[i].children[1].innerHTML)*Math.round(1/Number(statuses["mm"]))%1==0) rows[i].style.display="";
-  if (Number(statuses["frac"])%Number(rows[i].children[4].innerHTML.match(/[^\/]*$/)[0])==0) rows[i].style.display="";
-  if (statuses["screw"] == "a" && rows[i].children[5].innerHTML != "") rows[i].style.display="";
-  if (statuses["drill"] == "a" && rows[i].children[6].innerHTML != "") rows[i].style.display="";
-  if (statuses["awg"]   == "a" && rows[i].children[7].innerHTML != "") rows[i].style.display="";
-  if (statuses["swg"]   == "a" && rows[i].children[8].innerHTML != "") rows[i].style.display="";
-  if (Number(rows[i].children[ 9].innerHTML)%Number(statuses["mil2"])==0) rows[i].style.display="";
-  if (Number(rows[i].children[10].innerHTML)%Number(statuses["in2"])==0) rows[i].style.display="";
-  if (Number(rows[i].children[11].innerHTML)%Number(statuses["mm2"])==0) rows[i].style.display="";
-  if (Number(rows[i].children[12].innerHTML)%Number(statuses["mcm"])==0) rows[i].style.display="";
+function update() {
+  var rows = document.getElementById("mainTable").children;
+  for (i=1; i<rows.length-1; i++) {
+    rows[i].style.display = "none";
+    if (Number(rows[i].children[0].innerHTML)*Math.round(1/Number(statuses["inch"]))%1==0) rows[i].style.display="";
+    if (Number(rows[i].children[1].innerHTML)*Math.round(1/Number(statuses["mm"]))%1==0) rows[i].style.display="";
+    if (Number(statuses["frac"])%Number(rows[i].children[4].innerHTML.match(/[^\/]*$/)[0])==0) rows[i].style.display="";
+    if (statuses["screw"] == "a" && rows[i].children[5].innerHTML != "") rows[i].style.display="";
+    if (statuses["drill"] == "a" && rows[i].children[6].innerHTML != "") rows[i].style.display="";
+    if (statuses["awg"]   == "a" && rows[i].children[7].innerHTML != "") rows[i].style.display="";
+    if (statuses["swg"]   == "a" && rows[i].children[8].innerHTML != "") rows[i].style.display="";
+    if (Number(rows[i].children[ 9].innerHTML)%Number(statuses["mil2"])==0) rows[i].style.display="";
+    if (Number(rows[i].children[10].innerHTML)%Number(statuses["in2"])==0) rows[i].style.display="";
+    if (Number(rows[i].children[11].innerHTML)%Number(statuses["mm2"])==0) rows[i].style.display="";
+    if (Number(rows[i].children[12].innerHTML)%Number(statuses["mcm"])==0) rows[i].style.display="";
+  }
 }
 
+update();
 document.getElementById("mainTable").style.display = "";
 
 </script>
