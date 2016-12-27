@@ -35,7 +35,7 @@
 
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13) {statuses[event.target.id]=event.target.innerHTML;update();event.target.innerHTML=name[event.target.id];event.target.className='divButton';}">
+<tr onkeydown="if (event.which==13) {statuses[event.target.id]=event.target.innerHTML;update();event.target.innerHTML=names[event.target.id];event.target.className='divButton';event.target.contentEditable=false;}">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
