@@ -39,7 +39,7 @@
   update();
   event.target.className = 'divButton';
   event.target.contentEditable = false;
-  event.target.innerHTML = names[target.id];}
+  event.target.innerHTML = names[event.target.id];}
 ">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
@@ -1111,11 +1111,13 @@ window.ontouchend = function(event) {
 }
 
 function deselect(target) {
-  statuses[target.id] = target.innerHTML.toLowerCase();
-  update();
-  target.className = 'divButton';
-  target.contentEditable = false;
-  target.innerHTML = names[target.id];
+  if (target.className == "divField") {
+    statuses[target.id] = target.innerHTML.toLowerCase();
+    update();
+    target.className = 'divButton';
+    target.contentEditable = false;
+    target.innerHTML = names[target.id];
+  }
 }
 
 /******************************* Table selection ******************************/
