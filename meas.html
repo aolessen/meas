@@ -35,7 +35,7 @@
 
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13) setParams({event.target.id: event.target.innerHTML});">
+<tr onkeydown="if (event.which==13) {statuses[event.target.id]=event.target.innerHTML;update()}">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
@@ -953,7 +953,7 @@ function getParam(name) {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
 
-function getCookie2(cname) {
+function getCookie(cname) {
     var ca = document.cookie.split(';');
     for(var i = 0; i <ca.length; i++) {
         var c = ca[i];
@@ -961,49 +961,6 @@ function getCookie2(cname) {
         if (c.indexOf(cname + "=") == 0) return c.substring(cname.length + 1, c.length);
     }
     return "";
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
-console.log(getCookie("awg"));
-document.cookie = "username=John Doe";
-var un = getCookie("username")
-console.log(document.cookie);
-
-
-function setParam(name, value) {
-  /* build params */
-  var params = {};        
-  var x = /(?:\??)([^=&?]+)=?([^&?]*)/g;        
-  var s = window.location.search;
-  for(var r = x.exec(s); r; r = x.exec(s)) {
-    if (!r[2]) r[2] = '%%';
-    params[decodeURIComponent(r[1])] = r[2];
-  }
-  /* set param */
-  params[name] = encodeURIComponent(value);
-  /* build search */
-  var search = [];
-  for(var i in params) {
-    var p = encodeURIComponent(i);
-    if (params[i] != '%%') p += '=' + params[i];
-    search.push(p);
-  }
-  /* execute search */
-  window.location.search = search.join('&');
 }
 
 function setParams(newParams) {
@@ -1029,7 +986,6 @@ function setParams(newParams) {
 }
 
 
-
 var visibilities = {
     "inch":  ["h", "n", ".1", ".01"],
     "mm":    ["h", "n", "1", ".1"],
@@ -1045,12 +1001,15 @@ var visibilities = {
     "mm2":   ["h", "n", "a"],
     "mcm":   ["h", "n", "a"]};
 
+
 var statuses = {};
 for (unit in visibilities) {
-    statuses[unit] = getParam(unit);
-    if (statuses[unit] == "") statuses[unit] = "n";
-    if (statuses[unit] == "h")  document.getElementById("mainTable").classList.toggle("hide" + unit);
+  statuses[unit] = getCookie(unit);
+//  statuses[unit] = getParam(unit);
+  if (statuses[unit] == "") statuses[unit] = "n";
+  if (statuses[unit] == "h")  document.getElementById("mainTable").classList.toggle("hide" + unit);
 }
+
 
 /******************************* Table generation *****************************/
 
@@ -1113,7 +1072,6 @@ for (unit in visibilities) {
 /******************************* Touch and click ******************************/
 
 window.onclick = function(event) {
-  console.log(getCookie("username"));
   id = event.target.id;
   if (event.target.matches('.divButton') && id!="") {
     var vis = visibilities[id];
@@ -1158,24 +1116,20 @@ window.ontouchend = function(event) {
     } else if (event.changedTouches[0].pageY > bounds.bottom) { // clear setting
       statuses[id] = "h";
     }
-    setParams(statuses);
+    update();
   }
 }
 
-window.onpagehide = function(event) {
-  alert("A");
-  setParams(statuses);
-}
 
 function restoreAll () {
-  alert("asd");
   for (unit in statuses) if (statuses[unit]=="h") statuses[unit]="n";
-  setParams(statuses);
+  update();
 }
 
 /******************************* Table selection ******************************/
 
 function update() {
+  for (unit in statuses) document.cookie = unit + "=" + statuses[unit];
   var rows = document.getElementById("mainTable").children;
   for (i=1; i<rows.length-1; i++) {
     rows[i].style.display = "none";
