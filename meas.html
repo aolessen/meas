@@ -18,9 +18,6 @@
     background-image: linear-gradient(to bottom, #AAAAAA 0%, #DDDDDD 100%);
 }
 
-td {
-    white-space: nowrap;
-}
 
 #mainTable.hideinch  tr > *:nth-child(1) {display: none;}
 #mainTable.hidemm    tr > *:nth-child(2) {display: none;}
@@ -37,7 +34,7 @@ td {
 #mainTable.hidemcm   tr > *:nth-child(13) {display: none;}
 </style>
 
-<table><tbody id=mainTable style="white-space;nowrap;font-size:200%;display:none">
+<table><tbody id=mainTable style="white-space:nowrap;font-size:200%;display:none">
 <tr onkeydown="if (event.which==13) {event.target.blur();}">
 <td class="divButton" ontouchmove="event.preventDefault()" tabindex="1" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" tabindex="2" id="mm">mm</td>
