@@ -939,7 +939,7 @@
 <tr><td>2.250</td><td>57.15</td><td>2 1/4-4.5 0%<br>2 1/2-4 82%</td><td>M60-5.5 42%<br>M64-6.0 93%</td><td></td><td>2 1/4-4.5</td><td></td><td></td><td></td><td>-----</td><td>3.976</td><td>2565.</td><td>5062.</td></tr>
 <tr><td>2.500</td><td>63.50</td><td>2 1/2-4 0%</td><td>M64-6.0 7%<br>M68-6.0 61%</td><td></td><td>2 1/2-4</td><td></td><td></td><td></td><td>-----</td><td>4.908</td><td>3166.</td><td>6250.</td></tr>
 
-<tr><td colspan="100" class="divButton" onclick="restoreAll()">Restore Columns</td></tr>
+<tr><td colspan="100" class="divButton" onclick="for(unit in statuses) if(statuses[unit]=='h') statuses[unit]='n'; update();">Restore Columns</td></tr>
 
 </tbody></table>
 
@@ -1087,11 +1087,8 @@ var timer;
 var id = "";
 window.ontouchstart = function(event) {
   id = event.target.id;
-  if (event.target.matches('.divButton') && id!="") {
+  if (event.target.matches(".divButton") && id!="") {
     timer = setTimeout(function() {
-//      document.getElementById(id).className = "divField";
-//      document.getElementById(id).contentEditable = "true";
-//      document.getElementById(id).innerHTML = statuses[id];
       event.target.className = "divField";
       event.target.contentEditable = "true";
       event.target.innerHTML = statuses[event.target.id];
@@ -1115,12 +1112,6 @@ window.ontouchend = function(event) {
     }
     update();
   }
-}
-
-
-function restoreAll () {
-  for (unit in statuses) if (statuses[unit]=="h") statuses[unit]="n";
-  update();
 }
 
 /******************************* Table selection ******************************/
