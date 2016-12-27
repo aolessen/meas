@@ -35,7 +35,12 @@
 
 
 <table><tbody id=mainTable style="display:none;font-size:200%">
-<tr onkeydown="if (event.which==13) deselect(event.target);">
+<tr onkeydown="if (event.which==13)   {statuses[target.id] = target.innerHTML.toLowerCase();
+  update();
+  target.className = 'divButton';
+  target.contentEditable = false;
+  target.innerHTML = names[target.id];}
+">
 <td class="divButton" ontouchmove="event.preventDefault()" id="inch">Inch</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="mm">mm</td>
 <td class="divButton" ontouchmove="event.preventDefault()" id="ithr">Imperial</td>
@@ -1070,8 +1075,9 @@ window.onclick = function(event) {
 
 window.ondblclick = function(event) {
   if (event.target.matches('.divButton') && event.target.id!="") {
-    statuses[event.target.id] = "h";
-    update();
+      event.target.className = "divField";
+      event.target.contentEditable = "true";
+      event.target.innerHTML = statuses[event.target.id];
   }
 }
 
@@ -1105,7 +1111,7 @@ window.ontouchend = function(event) {
 }
 
 function deselect(target) {
-  statuses[target.id]=target.innerHTML.toLowerCase();
+  statuses[target.id] = target.innerHTML.toLowerCase();
   update();
   target.className = 'divButton';
   target.contentEditable = false;
