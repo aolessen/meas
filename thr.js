@@ -37,15 +37,22 @@ function floatString(x, digits) {
   else return RegExp("[^0]"+(".".repeat(digits-1))).exec(x.toFixed(digits-1));
 }
 
-function diameter(x) {return floatString(x*units.diameter[0][1],5) + " " + units.diameter[0][0];}
-function distance(x) {return floatString(x*units.distance[0][1],5) + " " + units.distance[0][0];}
-function area(x)     {return floatString(x*units.area[0][1],5) + " " + units.area[0][0];}
-function diameter(x) {return floatString(x*units.diameter[0][1],5) + " " + units.diameter[0][0];}
-function weight(x) {return floatString(x*units.weight[0][1]/units.distance[0][1],5) + " " + units.weight[0][0]+"/"+units.distance[0][0];}
-function force(x)  {return floatString(x*units.weight[0][1],5) + " " + units.weight[0][0];}
-function torque(x) {return floatString(x*units.weight[0][1]*units.distance[0][1],5) + " " + units.distance[0][0]+"-"+units.weight[0][0];}
-function electrical(x) {return floatString(x*units.electrical[0][1]/units.distance[0][1],5) + " " + units.electrical[0][0]+"/"+units.distance[0][0];}
-function thermal(x) {return floatString(x*units.thermal[0][1]/units.distance[0][1],5) + " " + units.thermal[0][0]+"-"+units.distance[0][0];}
+// function diameter(x) {return floatString(x*units.diameter[0][1],5) + " " + units.diameter[0][0];}
+// function distance(x) {return floatString(x*units.distance[0][1],5) + " " + units.distance[0][0];}
+// function area(x)     {return floatString(x*units.area[0][1],5) + " " + units.area[0][0];}
+// function weight(x) {return floatString(x*units.weight[0][1]/units.distance[0][1],5) + " " + units.weight[0][0]+"/"+units.distance[0][0];}
+// function force(x)  {return floatString(x*units.weight[0][1],5) + " " + units.weight[0][0];}
+// function torque(x) {return floatString(x*units.weight[0][1]*units.distance[0][1],5) + " " + units.distance[0][0]+"-"+units.weight[0][0];}
+// function electrical(x) {return floatString(x*units.electrical[0][1]/units.distance[0][1],5) + " " + units.electrical[0][0]+"/"+units.distance[0][0];}
+// function thermal(x) {return floatString(x*units.thermal[0][1]/units.distance[0][1],5) + " " + units.thermal[0][0]+"-"+units.distance[0][0];}
+function diameter(x)   {return " ontouchmove=\"event.preventDefault()\" class=\"diameter\">"   + floatString(x*units.diameter[0][1],5) + " " + units.diameter[0][0];}
+function distance(x)   {return " ontouchmove=\"event.preventDefault()\" class=\"distance\">"   + floatString(x*units.distance[0][1],5) + " " + units.distance[0][0];}
+function area(x)       {return " ontouchmove=\"event.preventDefault()\" class=\"area\">"       + floatString(x*units.area[0][1],5) + " " + units.area[0][0];}
+function weight(x)     {return " ontouchmove=\"event.preventDefault()\" class=\"weight\">"     + floatString(x*units.weight[0][1]/units.distance[0][1],5) + " " + units.weight[0][0]+"/"+units.distance[0][0];}
+function force(x)      {return " ontouchmove=\"event.preventDefault()\" class=\"weight\">"     + floatString(x*units.weight[0][1],5) + " " + units.weight[0][0];}
+function torque(x)     {return " ontouchmove=\"event.preventDefault()\" class=\"distance\">"   + floatString(x*units.weight[0][1]*units.distance[0][1],5) + " " + units.distance[0][0]+"-"+units.weight[0][0];}
+function electrical(x) {return " ontouchmove=\"event.preventDefault()\" class=\"electrical\">" + floatString(x*units.electrical[0][1]/units.distance[0][1],5) + " " + units.electrical[0][0]+"/"+units.distance[0][0];}
+function thermal(x)    {return " ontouchmove=\"event.preventDefault()\" class=\"thermal\">"    + floatString(x*units.thermal[0][1]/units.distance[0][1],5) + " " + units.thermal[0][0]+"-"+units.distance[0][0];}
 
 function getCookie(cname) {
     var ca = document.cookie.split(';');
@@ -138,23 +145,42 @@ function update(item) {
   var pc = Math.PI*pd;
   var ic = Math.PI*id;
   
+  // var out = "<table style=\"white-space:nowrap\"><tr><td colspan=\"3\"><center ontouchmove=\"event.preventDefault()\" class=\"item\">" + item.name + " thread</center></td></tr>\
+  // <tr><td>Major        </td><td class=\"diameter\">" + diameter(od) + "</td><td class=\"area\">" + area(oa)    + "</td></tr>\
+  // <tr><td>Pitch        </td><td class=\"diameter\">" + diameter(pd) + "</td><td class=\"area\">" + area(pa)    + "</td></tr>\
+  // <tr><td>Minor        </td><td class=\"diameter\">" + diameter(id) + "</td><td class=\"area\">" + area(ia)    + "</td></tr>\
+  // <tr><td>Thread       </td><td class=\"diameter\">" + diameter(td) + "</td><td class=\"area\">" + area(oa-ia) + "</td></tr>\
+  // <tr><td>Lateral Major</td><td class=\"diameter\">" + diameter(oc) + "</td><td class=\"area\">" + area(oc*tp) + "</td></tr>\
+  // <tr><td>Lateral Pitch</td><td class=\"diameter\">" + diameter(pc) + "</td><td class=\"area\">" + area(pc*tp) + "</td></tr>\
+  // <tr><td>Lateral Minor</td><td class=\"diameter\">" + diameter(ic) + "</td><td class=\"area\">" + area(ic*tp) + "</td></tr>\
+  // </table><br>\
+  // <table style=\"white-space:nowrap\"><tr><td ontouchmove=\"event.preventDefault()\" class=\"material\">" + material[0][0].name + "</td><td>Shank</td><td>Thread</td></tr>\
+  // <tr><td>Weight          </td><td class=\"weight\"    >" + weight(material[0][0].weight*oa)             + "</td><td class=\"weight\"    >" + weight(material[0][0].weight*pa)             + "</td></tr>\
+  // <tr><td>Yield Strength  </td><td class=\"weight\"    >" + force(material[0][0].yield*oa)               + "</td><td class=\"weight\"    >" + force(material[0][0].yield*ia)               + "</td></tr>\
+  // <tr><td>Tensile Strength</td><td class=\"weight\"    >" + force(material[0][0].tensile*oa)             + "</td><td class=\"weight\"    >" + force(material[0][0].tensile*ia)             + "</td></tr>\
+  // <tr><td>Yield Moment    </td><td class=\"distance\"  >" + torque(material[0][0].yield*od*od*od/6000)   + "</td><td class=\"distance\"  >" + torque(material[0][0].yield*id*id*id/6000)   + "</td></tr>\
+  // <tr><td>Tensile Moment  </td><td class=\"distance\"  >" + torque(material[0][0].tensile*od*od*od/6000) + "</td><td class=\"distance\"  >" + torque(material[0][0].tensile*id*id*id/6000) + "</td></tr>\
+  // <tr><td>Resistivity     </td><td class=\"electrical\">" + electrical(material[0][0].electrical/oa)     + "</td><td class=\"electrical\">" + electrical(material[0][0].electrical/ia)     + "</td></tr>\
+  // <tr><td>Conductivity    </td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*oa)           + "</td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*ia)           + "</td></tr>\
+  // </table><br>\
+  // <table style=\"white-space:nowrap\"><tr><td colspan=\"4\">Tap Drills</td></tr>";
   var out = "<table style=\"white-space:nowrap\"><tr><td colspan=\"3\"><center ontouchmove=\"event.preventDefault()\" class=\"item\">" + item.name + " thread</center></td></tr>\
-  <tr><td>Major        </td><td class=\"diameter\">" + diameter(od) + "</td><td class=\"area\">" + area(oa)    + "</td></tr>\
-  <tr><td>Pitch        </td><td class=\"diameter\">" + diameter(pd) + "</td><td class=\"area\">" + area(pa)    + "</td></tr>\
-  <tr><td>Minor        </td><td class=\"diameter\">" + diameter(id) + "</td><td class=\"area\">" + area(ia)    + "</td></tr>\
-  <tr><td>Thread       </td><td class=\"diameter\">" + diameter(td) + "</td><td class=\"area\">" + area(oa-ia) + "</td></tr>\
-  <tr><td>Lateral Major</td><td class=\"diameter\">" + diameter(oc) + "</td><td class=\"area\">" + area(oc*tp) + "</td></tr>\
-  <tr><td>Lateral Pitch</td><td class=\"diameter\">" + diameter(pc) + "</td><td class=\"area\">" + area(pc*tp) + "</td></tr>\
-  <tr><td>Lateral Minor</td><td class=\"diameter\">" + diameter(ic) + "</td><td class=\"area\">" + area(ic*tp) + "</td></tr>\
+  <tr><td>Major        </td><td" + diameter(od) + "</td><td" + area(oa)    + "</td></tr>\
+  <tr><td>Pitch        </td><td" + diameter(pd) + "</td><td" + area(pa)    + "</td></tr>\
+  <tr><td>Minor        </td><td" + diameter(id) + "</td><td" + area(ia)    + "</td></tr>\
+  <tr><td>Thread       </td><td" + diameter(td) + "</td><td" + area(oa-ia) + "</td></tr>\
+  <tr><td>Lateral Major</td><td" + diameter(oc) + "</td><td" + area(oc*tp) + "</td></tr>\
+  <tr><td>Lateral Pitch</td><td" + diameter(pc) + "</td><td" + area(pc*tp) + "</td></tr>\
+  <tr><td>Lateral Minor</td><td" + diameter(ic) + "</td><td" + area(ic*tp) + "</td></tr>\
   </table><br>\
   <table style=\"white-space:nowrap\"><tr><td ontouchmove=\"event.preventDefault()\" class=\"material\">" + material[0][0].name + "</td><td>Shank</td><td>Thread</td></tr>\
-  <tr><td>Weight          </td><td class=\"weight\"    >" + weight(material[0][0].weight*oa)             + "</td><td class=\"weight\"    >" + weight(material[0][0].weight*pa)             + "</td></tr>\
-  <tr><td>Yield Strength  </td><td class=\"weight\"    >" + force(material[0][0].yield*oa)               + "</td><td class=\"weight\"    >" + force(material[0][0].yield*ia)               + "</td></tr>\
-  <tr><td>Tensile Strength</td><td class=\"weight\"    >" + force(material[0][0].tensile*oa)             + "</td><td class=\"weight\"    >" + force(material[0][0].tensile*ia)             + "</td></tr>\
-  <tr><td>Yield Moment    </td><td class=\"distance\"  >" + torque(material[0][0].yield*od*od*od/6000)   + "</td><td class=\"distance\"  >" + torque(material[0][0].yield*id*id*id/6000)   + "</td></tr>\
-  <tr><td>Tensile Moment  </td><td class=\"distance\"  >" + torque(material[0][0].tensile*od*od*od/6000) + "</td><td class=\"distance\"  >" + torque(material[0][0].tensile*id*id*id/6000) + "</td></tr>\
-  <tr><td>Resistivity     </td><td class=\"electrical\">" + electrical(material[0][0].electrical/oa)     + "</td><td class=\"electrical\">" + electrical(material[0][0].electrical/ia)     + "</td></tr>\
-  <tr><td>Conductivity    </td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*oa)           + "</td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*ia)           + "</td></tr>\
+  <tr><td>Weight          </td><td" + weight(material[0][0].weight*oa)             + "</td><td" + weight(material[0][0].weight*pa)             + "</td></tr>\
+  <tr><td>Yield Strength  </td><td" + force(material[0][0].yield*oa)               + "</td><td" + force(material[0][0].yield*ia)               + "</td></tr>\
+  <tr><td>Tensile Strength</td><td" + force(material[0][0].tensile*oa)             + "</td><td" + force(material[0][0].tensile*ia)             + "</td></tr>\
+  <tr><td>Yield Moment    </td><td" + torque(material[0][0].yield*od*od*od/6000)   + "</td><td" + torque(material[0][0].yield*id*id*id/6000)   + "</td></tr>\
+  <tr><td>Tensile Moment  </td><td" + torque(material[0][0].tensile*od*od*od/6000) + "</td><td" + torque(material[0][0].tensile*id*id*id/6000) + "</td></tr>\
+  <tr><td>Resistivity     </td><td" + electrical(material[0][0].electrical/oa)     + "</td><td" + electrical(material[0][0].electrical/ia)     + "</td></tr>\
+  <tr><td>Conductivity    </td><td" + thermal(material[0][0].thermal*oa)           + "</td><td" + thermal(material[0][0].thermal*ia)           + "</td></tr>\
   </table><br>\
   <table style=\"white-space:nowrap\"><tr><td colspan=\"4\">Tap Drills</td></tr>";
   
@@ -186,7 +212,7 @@ function update(item) {
   33.5000:"33.5 mm", 33.7344:"1 21/64 in", 34.0000:"34 mm", 34.1313:"1 11/32 in", 34.5000:"34.5 mm", 34.5281:"1 23/64 in", 34.9250:"1 3/8 in", 35.0000:"35 mm", 35.3219:"1 25/64 in", 35.5000:"35.5 mm", 35.7188:"1 13/32 in", 36.0000:"36 mm", 36.1156:"1 27/64 in",
   36.5000:"36.5 mm", 36.5125:"1 7/16 in", 36.9094:"1 29/64 in", 37.0000:"37 mm", 37.3063:"1 15/32 in", 37.5000:"37.5 mm", 37.7031:"1 31/64 in", 38.0000:"38 mm", 38.1000:"1 1/2 in"};
   for (x in drills)
-    if (id <= x && x <= od) out += "<tr><td>"+Math.round(50*(od-x)/td)+"%</td><td>"+drills[x]+"</td><td class=\"diameter\">" + diameter(x) + "</td></tr>\n";
+    if (id <= x && x <= od) out += "<tr><td>"+Math.round(50*(od-x)/td)+"%</td><td>"+drills[x]+"</td><td" + diameter(x) + "</td></tr>\n";
   document.documentElement.innerHTML = out +"</table><br>";
   
   for(u in units) {
