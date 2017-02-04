@@ -1,4 +1,4 @@
-﻿
+
 /******************************* Parameters ***********************************/
 var units = {
     diameter: [["mm",1], ["cm",1/10], ["in",1/25.4], ["μm",1000], ["mil",1000/25.4]],
@@ -93,11 +93,11 @@ window.ontouchend = function(event) {
   if (timer) clearTimeout(timer);
   var bounds = event.target.getBoundingClientRect();
   if (event.changedTouches[0].pageX < bounds.left) { // next setting
-    for (prop in units) if (c == prop) units[c].push(units[c].shift());
+    for (u in units) if (c == u) units[c].push(units[c].shift());
     if (c == "material") material[0].push(material.shift());
     if (c == "item") location.search = "?"+items.pop().name;
   } else if (event.changedTouches[0].pageX > bounds.right) { // previous setting
-    for (prop in units) if (c == prop) units[c].unshift(units[c].pop());
+    for (u in units) if (c == u) units[c].unshift(units[c].pop());
     if (c == "material") material[0].unshift(material.pop());
     if (c == "item") location.search = "?"+items.shift().name;
   } else if (event.changedTouches[0].pageY < bounds.top) { // next major setting
@@ -113,7 +113,7 @@ window.ontouchend = function(event) {
 
 /* window.onclick = function(event) {
   var c = event.target.className;
-  for (prop in units) if (c == prop) units[c].push(units[c].shift());
+  for (u in units) if (c == u) units[c].push(units[c].shift());
   if (c == "material") material.push(material.shift());
   if (c == "item") location.search = "?"+items.pop().name;
   update(items[0]);
@@ -135,7 +135,7 @@ function update(item) {
   var pc = Math.PI*pd;
   var ic = Math.PI*id;
   
-  var out = "<table style=\"white-space:nowrap\"><tr><td colspan=\"3\"><center class=\"item\">" + item.name + " thread</center></td></tr>\
+  var out = "<table style=\"white-space:nowrap\"><tr><td colspan=\"3\"><center ontouchmove=\"event.preventDefault()\" class=\"item\">" + item.name + " thread</center></td></tr>\
   <tr><td>Major        </td><td class=\"diameter\">" + diameter(od) + "</td><td class=\"area\">" + area(oa)    + "</td></tr>\
   <tr><td>Pitch        </td><td class=\"diameter\">" + diameter(pd) + "</td><td class=\"area\">" + area(pa)    + "</td></tr>\
   <tr><td>Minor        </td><td class=\"diameter\">" + diameter(id) + "</td><td class=\"area\">" + area(ia)    + "</td></tr>\
@@ -144,14 +144,14 @@ function update(item) {
   <tr><td>Lateral Pitch</td><td class=\"diameter\">" + diameter(pc) + "</td><td class=\"area\">" + area(pc*tp) + "</td></tr>\
   <tr><td>Lateral Minor</td><td class=\"diameter\">" + diameter(ic) + "</td><td class=\"area\">" + area(ic*tp) + "</td></tr>\
   </table><br>\
-  <table style=\"white-space:nowrap\"><tr><td class=\"material\">" + material[0][0].name + "</td><td>Shank</td><td>Thread</td></tr>\
-  <tr><td>Weight          </td><td class=\"weight\"    >" + weight(material[0][0].weight*oa)          + "</td><td class=\"weight\"    >" + weight(material[0][0].weight*pa)          + "</td></tr>\
-  <tr><td>Yield Strength  </td><td class=\"weight\"    >" + force(material[0][0].yield*oa)            + "</td><td class=\"weight\"    >" + force(material[0][0].yield*ia)            + "</td></tr>\
-  <tr><td>Tensile Strength</td><td class=\"weight\"    >" + force(material[0][0].tensile*oa)          + "</td><td class=\"weight\"    >" + force(material[0][0].tensile*ia)          + "</td></tr>\
+  <table style=\"white-space:nowrap\"><tr><td ontouchmove=\"event.preventDefault()\" class=\"material\">" + material[0][0].name + "</td><td>Shank</td><td>Thread</td></tr>\
+  <tr><td>Weight          </td><td class=\"weight\"    >" + weight(material[0][0].weight*oa)             + "</td><td class=\"weight\"    >" + weight(material[0][0].weight*pa)             + "</td></tr>\
+  <tr><td>Yield Strength  </td><td class=\"weight\"    >" + force(material[0][0].yield*oa)               + "</td><td class=\"weight\"    >" + force(material[0][0].yield*ia)               + "</td></tr>\
+  <tr><td>Tensile Strength</td><td class=\"weight\"    >" + force(material[0][0].tensile*oa)             + "</td><td class=\"weight\"    >" + force(material[0][0].tensile*ia)             + "</td></tr>\
   <tr><td>Yield Moment    </td><td class=\"distance\"  >" + torque(material[0][0].yield*od*od*od/6000)   + "</td><td class=\"distance\"  >" + torque(material[0][0].yield*id*id*id/6000)   + "</td></tr>\
   <tr><td>Tensile Moment  </td><td class=\"distance\"  >" + torque(material[0][0].tensile*od*od*od/6000) + "</td><td class=\"distance\"  >" + torque(material[0][0].tensile*id*id*id/6000) + "</td></tr>\
-  <tr><td>Resistivity     </td><td class=\"electrical\">" + electrical(material[0][0].electrical/oa)  + "</td><td class=\"electrical\">" + electrical(material[0][0].electrical/ia)  + "</td></tr>\
-  <tr><td>Conductivity    </td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*oa)        + "</td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*ia)        + "</td></tr>\
+  <tr><td>Resistivity     </td><td class=\"electrical\">" + electrical(material[0][0].electrical/oa)     + "</td><td class=\"electrical\">" + electrical(material[0][0].electrical/ia)     + "</td></tr>\
+  <tr><td>Conductivity    </td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*oa)           + "</td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*ia)           + "</td></tr>\
   </table><br>\
   <table style=\"white-space:nowrap\"><tr><td colspan=\"4\">Tap Drills</td></tr>";
   
@@ -185,48 +185,12 @@ function update(item) {
   for (x in drills)
     if (id <= x && x <= od) out += "<tr><td>"+Math.round(50*(od-x)/td)+"%</td><td>"+drills[x]+"</td><td class=\"diameter\">" + diameter(x) + "</td></tr>\n";
   document.documentElement.innerHTML = out +"</table><br>";
-}
-
-
-
-function update2(item) {
-  var od = item.od;
-  var tp = item.tp;
-  var id = od/Math.sqrt(tp);
-  var oa = Math.PI*od*od/4;
-  var ia = Math.PI*id*id/4;
   
-  var out = "<table style=\"white-space:nowrap\"><tr><td colspan=\"3\"><center class=\"item\">" + item.name + " thread</center></td></tr>\
-  <tr><td class=\"material\">" + material[0][0].name + "</td><td>Total</td><td>Strand</td></tr>\
-  <tr><td>Diameter        </td><td class=\"diameter\"  >" + diameter(od)                              + "</td><td class=\"diameter\"  >" + diameter(id)                              + "</td></tr>\
-  <tr><td>Circumference   </td><td class=\"diameter\"  >" + diameter(Math.PI*od)                      + "</td><td class=\"diameter\"  >" + diameter(Math.PI*id)                              + "</td></tr>\
-  <tr><td>Area            </td><td class=\"area\"      >" + area(oa)                                  + "</td><td class=\"area\"      >" + area(ia)                                  + "</td></tr>\
-  <tr><td>Weight          </td><td class=\"weight\"    >" + weight(material[0][0].weight*oa)          + "</td><td class=\"weight\"    >" + weight(material[0][0].weight*ia)          + "</td></tr>\
-  <tr><td>Yield Strength  </td><td class=\"weight\"    >" + force(material[0][0].yield*oa)            + "</td><td class=\"weight\"    >" + force(material[0][0].yield*ia)            + "</td></tr>\
-  <tr><td>Tensile Strength</td><td class=\"weight\"    >" + force(material[0][0].tensile*oa)          + "</td><td class=\"weight\"    >" + force(material[0][0].tensile*ia)          + "</td></tr>\
-  <tr><td>Yield Moment    </td><td class=\"distance\"  >" + torque(material[0][0].yield*tp*id*id*id/6)   + "</td><td class=\"distance\"  >" + torque(material[0][0].yield*id*id*id/6)   + "</td></tr>\
-  <tr><td>Tensile Moment  </td><td class=\"distance\"  >" + torque(material[0][0].tensile*tp*id*id*id/6) + "</td><td class=\"distance\"  >" + torque(material[0][0].tensile*id*id*id/6) + "</td></tr>\
-  <tr><td>Resistivity     </td><td class=\"electrical\">" + electrical(material[0][0].electrical/oa)  + "</td><td class=\"electrical\">" + electrical(material[0][0].electrical/ia)  + "</td></tr>\
-  <tr><td>Conductivity    </td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*oa)        + "</td><td class=\"thermal\"   >" + thermal(material[0][0].thermal*ia)        + "</td></tr>\
-  </table><br>\
-  <table style=\"white-space:nowrap\"><tr><td colspan=\"4\">Strand Profiles</td></tr>";
-  
-  for (i=0; i<item.strand.length; i++) {
-    out += "<tr>" + item.strand[i] + "/"
-    id = item.od/item.strand[i]
-    for (j=i; i>=0; i--)
-      if (items[j].od < id) {
-        if (items[j+1].od - id < id - items[j].od)
-          out += items[j+1].name;
-        else
-          out += items[j].name;
-        break;
-      } else if(j == 0)
-        out += "<div class=\"diameter\">" + diameter(id) + "</div>";
-    
-    out +="</tr>"
+  for(u in units) {
+    l = document.getElementsByClassName(u);
+    for (var i=0; i<l.length; i++)
+      l[i].ontouchmove="event.preventDefault()"
   }
-  document.documentElement.innerHTML = out +"</table><br>";
 }
 
 
