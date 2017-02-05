@@ -82,25 +82,29 @@ for (i=0; i<items.length; i++)
 /******************************* Touch and click ******************************/
 var c = "";
 var bounds;
-window.onmousedown = function(event) {
-  event.preventDefault();
-  c = event.target.className;
+window.ontouchstart = function(event) {
+// window.onmousedown = function(event) {
+  c = event.target.className
   bounds = event.target.getBoundingClientRect();
 }
 
-window.onmouseup = function(event) {
-  event.preventDefault();
-  if (event.clientX < bounds.left) { // next setting
+window.ontouchend = function(event) {
+// window.onmouseup = function(event) {
+  if (event.changedTouches[0].pageX < bounds.left) { // next setting
+  // if (event.clientX < bounds.left) { // next setting
     for (u in units) if (c == u) units[c].unshift(units[c].pop());
     if (c == "material") material[0].unshift(material[0].pop());
     if (c == "item") location.search = "?"+items.shift().name;
-  } else if (event.clientX > bounds.right) { // previous setting
+  } else if (event.changedTouches[0].pageX > bounds.right) { // previous setting
+  // } else if (event.clientX > bounds.right) { // previous setting
     for (u in units) if (c == u) units[c].push(units[c].shift());
     if (c == "material") material[0].push(material[0].shift());
     if (c == "item") location.search = "?"+items.pop().name;
-  } else if (event.clientY < bounds.top) { // next major setting
+  } else if (event.changedTouches[0].pageY < bounds.top) { // next major setting
+  // } else if (event.clientY < bounds.top) { // next major setting
     if (c == "material") material.unshift(material.pop());
-  } else if (event.clientY > bounds.bottom) { // previous major setting
+  } else if (event.changedTouches[0].pageY > bounds.bottom) { // previous major setting
+  // } else if (event.clientY > bounds.bottom) { // previous major setting
     if (c == "material") material.push(material.shift());
   } else {
     return;
@@ -108,6 +112,11 @@ window.onmouseup = function(event) {
   update(items[0]);
 }
 
+window.ontouchmove = function(event) {
+  var c = event.target.className
+  if (c in units || c == "material" || c == "item")
+    event.preventDefault()
+}
 
 /* window.onclick = function(event) {
   var c = event.target.className;
@@ -142,14 +151,14 @@ function update(item) {
   <tr><td>Lateral Pitch</td><td>" + diameter(pc) + "</td><td>" + area(pc*tp) + "</td></tr>\
   <tr><td>Lateral Minor</td><td>" + diameter(ic) + "</td><td>" + area(ic*tp) + "</td></tr>\
   </table><br>\
-  <table style=\"white-space:nowrap;font-size:200%\"><tr><td ontouchmove=\"event.preventDefault()\" class=\"material\">" + material[0][0].name + "</td><td>aShank</td><td>Thread</td></tr>\
-  <tr><td>Weight          </td><td ontouchmove=\"event.preventDefault()\">" + weight(material[0][0].weight*oa)             + "</td><td>" + weight(material[0][0].weight*pa)             + "</td></tr>\
-  <tr><td>Yield Strength  </td><td ontouchmove=\"event.preventDefault()\">" + force(material[0][0].yield*oa)               + "</td><td>" + force(material[0][0].yield*ia)               + "</td></tr>\
-  <tr><td>Tensile Strength</td><td ontouchmove=\"event.preventDefault()\">" + force(material[0][0].tensile*oa)             + "</td><td>" + force(material[0][0].tensile*ia)             + "</td></tr>\
-  <tr><td>Yield Moment    </td><td ontouchmove=\"event.preventDefault()\">" + torque(material[0][0].yield*od*od*od/6000)   + "</td><td>" + torque(material[0][0].yield*id*id*id/6000)   + "</td></tr>\
-  <tr><td>Tensile Moment  </td><td ontouchmove=\"event.preventDefault()\">" + torque(material[0][0].tensile*od*od*od/6000) + "</td><td>" + torque(material[0][0].tensile*id*id*id/6000) + "</td></tr>\
-  <tr><td>Resistivity     </td><td ontouchmove=\"event.preventDefault()\">" + electrical(material[0][0].electrical/oa)     + "</td><td>" + electrical(material[0][0].electrical/ia)     + "</td></tr>\
-  <tr><td>Conductivity    </td><td ontouchmove=\"event.preventDefault()\">" + thermal(material[0][0].thermal*oa)           + "</td><td>" + thermal(material[0][0].thermal*ia)           + "</td></tr>\
+  <table style=\"white-space:nowrap;font-size:200%\"><tr><td ontouchmove=\"event.preventDefault()\" class=\"material\">" + material[0][0].name + "</td><td>Shank</td><td>Thread</td></tr>\
+  <tr><td>Weight          </td><td>" + weight(material[0][0].weight*oa)             + "</td><td>" + weight(material[0][0].weight*pa)             + "</td></tr>\
+  <tr><td>Yield Strength  </td><td>" + force(material[0][0].yield*oa)               + "</td><td>" + force(material[0][0].yield*ia)               + "</td></tr>\
+  <tr><td>Tensile Strength</td><td>" + force(material[0][0].tensile*oa)             + "</td><td>" + force(material[0][0].tensile*ia)             + "</td></tr>\
+  <tr><td>Yield Moment    </td><td>" + torque(material[0][0].yield*od*od*od/6000)   + "</td><td>" + torque(material[0][0].yield*id*id*id/6000)   + "</td></tr>\
+  <tr><td>Tensile Moment  </td><td>" + torque(material[0][0].tensile*od*od*od/6000) + "</td><td>" + torque(material[0][0].tensile*id*id*id/6000) + "</td></tr>\
+  <tr><td>Resistivity     </td><td>" + electrical(material[0][0].electrical/oa)     + "</td><td>" + electrical(material[0][0].electrical/ia)     + "</td></tr>\
+  <tr><td>Conductivity    </td><td>" + thermal(material[0][0].thermal*oa)           + "</td><td>" + thermal(material[0][0].thermal*ia)           + "</td></tr>\
   </table><br>\
   <table style=\"white-space:nowrap;font-size:200%\"><tr><td colspan=\"4\">Tap Drills</td></tr>";
   
@@ -183,12 +192,6 @@ function update(item) {
   for (x in drills)
     if (id <= x && x <= od) out += "<tr><td>"+Math.round(50*(od-x)/td)+"%</td><td>"+drills[x]+"</td><td>" + diameter(x) + "</td></tr>\n";
   document.documentElement.innerHTML = out +"</table><br>";
-  
-  for(u in units) {
-    l = document.getElementsByClassName(u);
-    for (var i=0; i<l.length; i++)
-      l[i].ontouchmove="event.preventDefault()"
-  }
 }
 
 
