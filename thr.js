@@ -108,6 +108,12 @@ window.onmouseup = function(event) {
   update(items[0]);
 }
 
+window.ontouchmove = function(event) {
+  c = event.target.className;
+  if (c in units || c=="material" || c=="item")
+    event.preventDefault();
+}
+
 
 /* window.onclick = function(event) {
   var c = event.target.className;
