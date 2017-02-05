@@ -108,12 +108,6 @@ window.onmouseup = function(event) {
   update(items[0]);
 }
 
-window.ontouchmove = function(event) {
-  c = event.target.className;
-  if (c in units || c=="material" || c=="item")
-    event.preventDefault();
-}
-
 
 /* window.onclick = function(event) {
   var c = event.target.className;
@@ -148,14 +142,14 @@ function update(item) {
   <tr><td>Lateral Pitch</td><td>" + diameter(pc) + "</td><td>" + area(pc*tp) + "</td></tr>\
   <tr><td>Lateral Minor</td><td>" + diameter(ic) + "</td><td>" + area(ic*tp) + "</td></tr>\
   </table><br>\
-  <table style=\"white-space:nowrap;font-size:200%\"><tr><td ontouchmove=\"event.preventDefault()\" class=\"material\">" + material[0][0].name + "</td><td>Shank</td><td>Thread</td></tr>\
-  <tr><td>Weight          </td><td>" + weight(material[0][0].weight*oa)             + "</td><td>" + weight(material[0][0].weight*pa)             + "</td></tr>\
-  <tr><td>Yield Strength  </td><td>" + force(material[0][0].yield*oa)               + "</td><td>" + force(material[0][0].yield*ia)               + "</td></tr>\
-  <tr><td>Tensile Strength</td><td>" + force(material[0][0].tensile*oa)             + "</td><td>" + force(material[0][0].tensile*ia)             + "</td></tr>\
-  <tr><td>Yield Moment    </td><td>" + torque(material[0][0].yield*od*od*od/6000)   + "</td><td>" + torque(material[0][0].yield*id*id*id/6000)   + "</td></tr>\
-  <tr><td>Tensile Moment  </td><td>" + torque(material[0][0].tensile*od*od*od/6000) + "</td><td>" + torque(material[0][0].tensile*id*id*id/6000) + "</td></tr>\
-  <tr><td>Resistivity     </td><td>" + electrical(material[0][0].electrical/oa)     + "</td><td>" + electrical(material[0][0].electrical/ia)     + "</td></tr>\
-  <tr><td>Conductivity    </td><td>" + thermal(material[0][0].thermal*oa)           + "</td><td>" + thermal(material[0][0].thermal*ia)           + "</td></tr>\
+  <table style=\"white-space:nowrap;font-size:200%\"><tr><td ontouchmove=\"event.preventDefault()\" class=\"material\">" + material[0][0].name + "</td><td>aShank</td><td>Thread</td></tr>\
+  <tr><td>Weight          </td><td ontouchmove=\"event.preventDefault()\">" + weight(material[0][0].weight*oa)             + "</td><td>" + weight(material[0][0].weight*pa)             + "</td></tr>\
+  <tr><td>Yield Strength  </td><td ontouchmove=\"event.preventDefault()\">" + force(material[0][0].yield*oa)               + "</td><td>" + force(material[0][0].yield*ia)               + "</td></tr>\
+  <tr><td>Tensile Strength</td><td ontouchmove=\"event.preventDefault()\">" + force(material[0][0].tensile*oa)             + "</td><td>" + force(material[0][0].tensile*ia)             + "</td></tr>\
+  <tr><td>Yield Moment    </td><td ontouchmove=\"event.preventDefault()\">" + torque(material[0][0].yield*od*od*od/6000)   + "</td><td>" + torque(material[0][0].yield*id*id*id/6000)   + "</td></tr>\
+  <tr><td>Tensile Moment  </td><td ontouchmove=\"event.preventDefault()\">" + torque(material[0][0].tensile*od*od*od/6000) + "</td><td>" + torque(material[0][0].tensile*id*id*id/6000) + "</td></tr>\
+  <tr><td>Resistivity     </td><td ontouchmove=\"event.preventDefault()\">" + electrical(material[0][0].electrical/oa)     + "</td><td>" + electrical(material[0][0].electrical/ia)     + "</td></tr>\
+  <tr><td>Conductivity    </td><td ontouchmove=\"event.preventDefault()\">" + thermal(material[0][0].thermal*oa)           + "</td><td>" + thermal(material[0][0].thermal*ia)           + "</td></tr>\
   </table><br>\
   <table style=\"white-space:nowrap;font-size:200%\"><tr><td colspan=\"4\">Tap Drills</td></tr>";
   
