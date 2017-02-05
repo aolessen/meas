@@ -82,28 +82,24 @@ for (i=0; i<items.length; i++)
 /******************************* Touch and click ******************************/
 var c = "";
 var bounds;
-// window.ontouchstart = function(event) {
 window.onmousedown = function(event) {
-  c = event.target.className
+  event.preventDefault();
+  c = event.target.className;
   bounds = event.target.getBoundingClientRect();
 }
 
-// window.ontouchend = function(event) {
 window.onmouseup = function(event) {
-  // if (event.changedTouches[0].pageX < bounds.left) { // next setting
+  event.preventDefault();
   if (event.clientX < bounds.left) { // next setting
     for (u in units) if (c == u) units[c].unshift(units[c].pop());
     if (c == "material") material[0].unshift(material[0].pop());
     if (c == "item") location.search = "?"+items.shift().name;
-  // } else if (event.changedTouches[0].pageX > bounds.right) { // previous setting
   } else if (event.clientX > bounds.right) { // previous setting
     for (u in units) if (c == u) units[c].push(units[c].shift());
     if (c == "material") material[0].push(material[0].shift());
     if (c == "item") location.search = "?"+items.pop().name;
-  // } else if (event.changedTouches[0].pageY < bounds.top) { // next major setting
   } else if (event.clientY < bounds.top) { // next major setting
     if (c == "material") material.unshift(material.pop());
-  // } else if (event.changedTouches[0].pageY > bounds.bottom) { // previous major setting
   } else if (event.clientY > bounds.bottom) { // previous major setting
     if (c == "material") material.push(material.shift());
   } else {
