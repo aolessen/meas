@@ -1,5 +1,5 @@
-
-/******************************* Parameters ***********************************/
+﻿
+/******************************* Parameters ***********************************
 var units = {
     diameter: [["mm",1], ["cm",1/10], ["in",1/25.4], ["μm",1000], ["mil",1000/25.4]],
     distance: [["m",1], ["km",1/1000], ["mi",125/201168], ["cm",100], ["in",5000/127], ["ft",1250/381]],
@@ -37,14 +37,14 @@ function floatString(x, digits) {
   else return RegExp("[^0]"+(".".repeat(digits-1))).exec(x.toFixed(digits-1));
 }
 
-function diameter(x)   {return "<span ontouchmove=\"event.preventDefault()\" class=\"diameter\">"   + floatString(x*units.diameter[0][1],5) + " " + units.diameter[0][0] + "</span>";}
-function distance(x)   {return "<span ontouchmove=\"event.preventDefault()\" class=\"distance\">"   + floatString(x*units.distance[0][1],5) + " " + units.distance[0][0] + "</span>";}
-function area(x)       {return "<span ontouchmove=\"event.preventDefault()\" class=\"area\">"       + floatString(x*units.area[0][1],5) + " " + units.area[0][0] + "</span>";}
-function weight(x)     {return "<span ontouchmove=\"event.preventDefault()\" class=\"weight\">"     + floatString(x*units.weight[0][1]/units.distance[0][1],5) + " " + units.weight[0][0]+"/"+units.distance[0][0] + "</span>";}
-function force(x)      {return "<span ontouchmove=\"event.preventDefault()\" class=\"weight\">"     + floatString(x*units.weight[0][1],5) + " " + units.weight[0][0] + "</span>";}
-function torque(x)     {return "<span ontouchmove=\"event.preventDefault()\" class=\"distance\">"   + floatString(x*units.weight[0][1]*units.distance[0][1],5) + " " + units.distance[0][0]+"-"+units.weight[0][0] + "</span>";}
-function electrical(x) {return "<span ontouchmove=\"event.preventDefault()\" class=\"electrical\">" + floatString(x*units.electrical[0][1]/units.distance[0][1],5) + " " + units.electrical[0][0]+"/"+units.distance[0][0] + "</span>";}
-function thermal(x)    {return "<span ontouchmove=\"event.preventDefault()\" class=\"thermal\">"    + floatString(x*units.thermal[0][1]/units.distance[0][1],5) + " " + units.thermal[0][0]+"-"+units.distance[0][0] + "</span>";}
+function diameter(x)   {return "<span class=\"diameter\">"   + floatString(x*units.diameter[0][1],5) + " " + units.diameter[0][0] + "</span>";}
+function distance(x)   {return "<span class=\"distance\">"   + floatString(x*units.distance[0][1],5) + " " + units.distance[0][0] + "</span>";}
+function area(x)       {return "<span class=\"area\">"       + floatString(x*units.area[0][1],5) + " " + units.area[0][0] + "</span>";}
+function weight(x)     {return "<span class=\"weight\">"     + floatString(x*units.weight[0][1]/units.distance[0][1],5) + " " + units.weight[0][0]+"/"+units.distance[0][0] + "</span>";}
+function force(x)      {return "<span class=\"weight\">"     + floatString(x*units.weight[0][1],5) + " " + units.weight[0][0] + "</span>";}
+function torque(x)     {return "<span class=\"distance\">"   + floatString(x*units.weight[0][1]*units.distance[0][1],5) + " " + units.distance[0][0]+"-"+units.weight[0][0] + "</span>";}
+function electrical(x) {return "<span class=\"electrical\">" + floatString(x*units.electrical[0][1]/units.distance[0][1],5) + " " + units.electrical[0][0]+"/"+units.distance[0][0] + "</span>";}
+function thermal(x)    {return "<span class=\"thermal\">"    + floatString(x*units.thermal[0][1]/units.distance[0][1],5) + " " + units.thermal[0][0]+"-"+units.distance[0][0] + "</span>";}
 
 function getCookie(cname) {
     var ca = document.cookie.split(';');
@@ -79,32 +79,26 @@ for (i=0; i<items.length; i++)
   else items.push(items.shift());
 
 
-/******************************* Touch and click ******************************/
+/******************************* Touch and click ******************************
 var c = "";
 var bounds;
 window.ontouchstart = function(event) {
-// window.onmousedown = function(event) {
   c = event.target.className
   bounds = event.target.getBoundingClientRect();
 }
 
 window.ontouchend = function(event) {
-// window.onmouseup = function(event) {
   if (event.changedTouches[0].pageX < bounds.left) { // next setting
-  // if (event.clientX < bounds.left) { // next setting
     for (u in units) if (c == u) units[c].unshift(units[c].pop());
     if (c == "material") material[0].unshift(material[0].pop());
     if (c == "item") location.search = "?"+items.shift().name;
   } else if (event.changedTouches[0].pageX > bounds.right) { // previous setting
-  // } else if (event.clientX > bounds.right) { // previous setting
     for (u in units) if (c == u) units[c].push(units[c].shift());
     if (c == "material") material[0].push(material[0].shift());
     if (c == "item") location.search = "?"+items.pop().name;
   } else if (event.changedTouches[0].pageY < bounds.top) { // next major setting
-  // } else if (event.clientY < bounds.top) { // next major setting
     if (c == "material") material.unshift(material.pop());
   } else if (event.changedTouches[0].pageY > bounds.bottom) { // previous major setting
-  // } else if (event.clientY > bounds.bottom) { // previous major setting
     if (c == "material") material.push(material.shift());
   } else {
     return;
@@ -118,18 +112,13 @@ window.ontouchmove = function(event) {
     event.preventDefault()
 }
 
-/* window.onclick = function(event) {
-  var c = event.target.className;
-  for (u in units) if (c == u) units[c].push(units[c].shift());
-  if (c == "material") material.push(material.shift());
-  if (c == "item") location.search = "?"+items.pop().name;
-  update(items[0]);
-}
-
-
 /******************************* Table selection ******************************/
 
 function update(item) {
+  for (u in units)
+    document.cookie = u + "=" + units[u][0][0] + "; path=/";
+  document.cookie = "material" + "=" + material[0][0] + "; path=/";
+  
   var od = item.od
   var tp = item.tp
   var td = tp * 5.5 / 16 * Math.sqrt(3); //5.635
@@ -190,7 +179,7 @@ function update(item) {
   33.5000:"33.5 mm", 33.7344:"1 21/64 in", 34.0000:"34 mm", 34.1313:"1 11/32 in", 34.5000:"34.5 mm", 34.5281:"1 23/64 in", 34.9250:"1 3/8 in", 35.0000:"35 mm", 35.3219:"1 25/64 in", 35.5000:"35.5 mm", 35.7188:"1 13/32 in", 36.0000:"36 mm", 36.1156:"1 27/64 in",
   36.5000:"36.5 mm", 36.5125:"1 7/16 in", 36.9094:"1 29/64 in", 37.0000:"37 mm", 37.3063:"1 15/32 in", 37.5000:"37.5 mm", 37.7031:"1 31/64 in", 38.0000:"38 mm", 38.1000:"1 1/2 in"};
   for (x in drills)
-    if (id <= x && x <= od) out += "<tr><td>"+Math.round(50*(od-x)/td)+"%</td><td>"+drills[x]+"</td><td>" + diameter(x) + "</td></tr>\n";
+    if (id <= x && x <= od) out += "<tr><td>"+Math.round(50*(od-x)/td)+"%</td><td>" + drills[x] + "</td><td>" + diameter(x) + "</td></tr>\n";
   document.documentElement.innerHTML = out +"</table><br>";
 }
 
