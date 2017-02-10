@@ -103,7 +103,7 @@ window.ontouchend = function(event) {
   } else if (event.changedTouches[0].pageX > bounds.right) { // previous setting
     for (u in units) if (c == u) units[c].push(units[c].shift());
     if (c == "material") material[0].push(material[0].shift());
-    if (c == "item") location.search = "?"+items.unshift().name;
+    if (c == "item") {items.shift(); location.search = "?"+items.shift().name;}
   } else if (event.changedTouches[0].pageY < bounds.top) { // next major setting
     if (c == "material") material.unshift(material.pop());
   } else if (event.changedTouches[0].pageY > bounds.bottom) { // previous major setting
