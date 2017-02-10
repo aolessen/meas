@@ -15,7 +15,7 @@
   var pc = Math.PI*pd;
   var ic = Math.PI*id;
   
-  var out = "<table style=\"white-space:nowrap;font-size:200%\"><tr><td colspan=\"3\"><center><span ontouchmove=\"event.preventDefault()\" class=\"item\">" + item.name + " thread</span></center></td></tr>\
+  var out = "<br><table style=\"white-space:nowrap;font-size:200%\"><tr><td colspan=\"3\"><center>" + itemDisplay(item.name) + "</center></td></tr>\
   <tr><td>Major        </td><td>" + diameter(od) + "</td><td>" + area(oa)    + "</td></tr>\
   <tr><td>Pitch        </td><td>" + diameter(pd) + "</td><td>" + area(pa)    + "</td></tr>\
   <tr><td>Minor        </td><td>" + diameter(id) + "</td><td>" + area(ia)    + "</td></tr>\

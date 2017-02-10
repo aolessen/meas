@@ -19,15 +19,15 @@ a {
   text-decoration: inherit;
 }
 </style>
-<table style="white-space:nowrap;font-size:100%"><thead id=headTable></thead><tbody id=mainTable></tbody></table>
+<table style="white-space:nowrap;font-size:200%"><thead id=headTable></thead><tbody id=mainTable></tbody></table>
 <script>
 
 /******************************* Parameters ***********************************/
 var visibilities = {
-    "inch":  ["h", "n", ".1", ".01"],
-    "mm":    ["h", "n", "1", ".1"],
-    "frac":  ["h", "n", "2", "4", "8", "16", "32", "64"],
-    "screw": ["h", "n", "a"],
+    "inch":  ["h", "n", "1", ".1", ".01"],
+    "mm":    ["h", "n", "10", "1", ".1"],
+    "frac":  ["h", "n", "4", "16", "64"],
+    "screw": ["h", "n", "m", "i", "a"],
     "drill": ["h", "n", "a"],
     "awg":   ["h", "n", "a"],
     "swg":   ["h", "n", "a"],
@@ -147,23 +147,23 @@ function update() {
   
   if (statuses["drill"] == "a")
     for (x in constantsTable["drill"])
-      add(constantsTable["drill"][x], "drill", "<a href=thr.html?"+x.split(",")[0]+">"+x+"</a>");
+      add(constantsTable["drill"][x], "drill", "<a href=drill.html?"+x.split(",")[0]+">"+x+"</a>");
   
   if (statuses["awg"] == "a")
     for (x in constantsTable["awg"])
-      add(constantsTable["awg"][x], "awg", "<a href=thr.html?"+x.split(",")[0]+">"+x+"</a>");
+      add(constantsTable["awg"][x], "awg", "<a href=awg.html?"+x.split(",")[0]+">"+x+"</a>");
   
   if (statuses["swg"] == "a")
     for (x in constantsTable["swg"])
-      add(constantsTable["swg"][x], "swg", "<a href=thr.html?"+x.split(",")[0]+">"+x+"</a>");
+      add(constantsTable["swg"][x], "swg", "<a href=swg.html?"+x.split(",")[0]+">"+x+"</a>");
   
   if (statuses["screw"] == "a" || statuses["screw"] == "i")
     for (x in constantsTable["ithr"])
-      add(constantsTable["ithr"][x], "screw", "<a href=thr.html?"+x.split(",")[0]+">"+x+"</a>");
+      add(constantsTable["ithr"][x], "screw", "<a href=ithr.html?"+x.split(",")[0]+">"+x+"</a>");
   
   if (statuses["screw"] == "a" || statuses["screw"] == "m")
     for (x in constantsTable["mthr"])
-      add(constantsTable["mthr"][x], "screw", "<a href=thr.html?"+x.split(",")[0]+">"+x+"</a>");
+      add(constantsTable["mthr"][x], "screw", "<a href=mthr.html?"+x.split(",")[0]+">"+x+"</a>");
   
   var d = Number(statuses["frac"]);
   if (!isNaN(d) && 0 < d)
