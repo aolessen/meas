@@ -83,6 +83,7 @@ for (i=0; i<material.length; i++) {
 }
 // Get the item from url
 var c = decodeURI(location.search.substring(1));
+// var c = decodeURI(location.hash.substring(1));
 for (i=0; i<items.length; i++)
   if (c == items[0].name) break;
   else items.push(items.shift());
@@ -91,7 +92,7 @@ for (i=0; i<items.length; i++)
 var c = "";
 var bounds;
 window.ontouchstart = function(event) {
-  c = event.target.className
+  c = event.target.className;
   bounds = event.target.getBoundingClientRect();
 }
 
@@ -99,11 +100,11 @@ window.ontouchend = function(event) {
   if (event.changedTouches[0].pageX < bounds.left) { // next setting
     for (u in units) if (c == u) units[c].unshift(units[c].pop());
     if (c == "material") material[0].unshift(material[0].pop());
-    if (c == "item") location.search = "?"+items.pop().name;
+    if (c == "item") location.search = items.pop().name;
   } else if (event.changedTouches[0].pageX > bounds.right) { // previous setting
     for (u in units) if (c == u) units[c].push(units[c].shift());
     if (c == "material") material[0].push(material[0].shift());
-    if (c == "item") {items.shift(); location.search = "?"+items.shift().name;}
+    if (c == "item") location.search = items[1].name;
   } else if (event.changedTouches[0].pageY < bounds.top) { // next major setting
     if (c == "material") material.unshift(material.pop());
   } else if (event.changedTouches[0].pageY > bounds.bottom) { // previous major setting
@@ -115,7 +116,13 @@ window.ontouchend = function(event) {
 }
 
 window.ontouchmove = function(event) {
-  var c = event.target.className
+  var c = event.target.className;
   if (c in units || c == "material" || c == "item")
     event.preventDefault()
+}
+
+window.onclick = function(event) {
+  var c = event.target.className;
+  if (c == "item") {location.search = items.pop().name;}
+  update(items[0]);
 }
